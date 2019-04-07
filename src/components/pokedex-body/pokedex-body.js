@@ -13,6 +13,13 @@ const Card = styled.div`
     width: 800px;
     margin: 100px auto;
     display: flex;
+    @media only screen and (max-width: 600px) {
+        flex-direction: column;
+        width: 100%;
+        min-width: 580px;
+        height: auto;
+        margin: 0 auto;
+    }
 `
 const Screen = styled.div`
     height: 560px;
@@ -24,6 +31,10 @@ const Screen = styled.div`
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+    @media only screen and (max-width: 600px) {
+        margin: 20px;
+        width: auto;
+    }
 `
 // const ImageView = styled.div`
 //     height: 150px;
@@ -107,17 +118,15 @@ const PreviewImg = styled.img`
   `
 
 const DetailText = styled.p`
+    align-self: flex-start;
+    margin: 0 0 0 5px;
     text-transform: capitalize;
+    justify-content: space-between;
+    font-size: 18px;
+    font-weight: bolder;
+    font-family: Roboto;
 `
-const powerButton = styled.img`
-    cursor: pointer;
-    position: relative;
-    bottom: -50px;
-    right: -65px;
-    width: 150px;
-    height: 120px;
-    z-index: 2;
-`
+
 const PokedexBody = ({pokemons, onSelect, currentPokemon, isPokedexOn, power}) => (
     <Card>
         {console.log(isPokedexOn)}
