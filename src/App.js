@@ -1,25 +1,53 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.css';
+import PokedexBody from './components/pokedex-body/pokedex-body';
+import Axios from 'axios'
+
+const API_LINK = "https://pokeapi.co/api/v2/pokemon/?offset=0&limit=694"
 
 class App extends Component {
+  constructor() {
+    super();
+    this.state = { 
+      pokemons: null,
+      currentPokemon: null,
+      isPokedexOn: false,
+      }; 
+  
+  }
+  power(){
+    this.setState({
+      isPokedexOn: !this.state.isPokedexOn,
+      currentPokemon: null
+    })
+  }
+  async onSelect(e){
+    const selectedPokemon = e.target.id
+    const currentPokemon = await Axios.get(`https://pokeapi.co/api/v2/pokemon/${selectedPokemon}`)
+    
+    this.setState({
+      currentPokemon
+    })
+  }
+
+  async componentWillMount(){
+    const res = await Axios.get(API_LINK)
+    const pokemons = res.data.results
+    this.setState({
+      pokemons
+    })
+  }
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <PokedexBody 
+          pokemons={this.state.pokemons}
+          currentPokemon={this.state.currentPokemon}
+          onSelect={(e) => this.onSelect(e)}
+          isPokedexOn={this.state.isPokedexOn}
+          power={this.power.bind(this)}
+        />
       </div>
     );
   }
