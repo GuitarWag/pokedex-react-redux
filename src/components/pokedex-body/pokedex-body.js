@@ -149,8 +149,7 @@ const PokedexBody = ({pokemons, onSelect, currentPokemon, isPokedexOn, power}) =
                 <DetailText className="edit">{currentPokemon && `Sp.Defense: ${currentPokemon.data.stats[1].base_stat}`}</DetailText>
                 <DetailText className="edit">{currentPokemon && `Sp.Attack: ${currentPokemon.data.stats[2].base_stat}`}</DetailText>
             </DetailScreen>
-            {/* <img className="on-off-button" onClick={power} src={isPokedexOn? on : off}/> */}
-            <powerButton onClick={power} src={isPokedexOn? on : off}/>
+            <img className="on-off-button" onClick={power} src={isPokedexOn? on : off}/>
             {/* <Control>
                 <ControlButton className="up-button"/>
                 <ControlButton className="right-button"/>
