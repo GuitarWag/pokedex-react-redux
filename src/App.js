@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.css';
+import { Container } from 'react-bootstrap';
 import PokedexBody from './components/pokedex-body/pokedex-body';
 import Axios from 'axios'
 
@@ -40,7 +41,7 @@ class App extends Component {
   }
   render() {
     return (
-      <div className="App">
+      <Container>
         <PokedexBody 
           pokemons={this.state.pokemons}
           currentPokemon={this.state.currentPokemon}
@@ -48,7 +49,7 @@ class App extends Component {
           isPokedexOn={this.state.isPokedexOn}
           power={this.power.bind(this)}
         />
-      </div>
+      </Container>
     );
   }
 }

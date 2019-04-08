@@ -1,11 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Carousel } from 'react-bootstrap';
+import { Carousel, Container, Col } from 'react-bootstrap';
 import on from './images/on.png'
 import off from './images/off.png'
 
  
-const Card = styled.div`
+const Card = styled(Container)`
     background-color: #FF0000;
     box-shadow: 5px 10px 5px #888888;
     min-height: 500px;
@@ -16,10 +16,11 @@ const Card = styled.div`
     display: flex;
     @media only screen and (max-width: 600px) {
         flex-direction: column;
-        width: ${window.innerWidth}
-        max-width: 100%;
+        width: 100%;
+        min-width: 100%;
         height: auto;
         margin: 0 auto;
+        overflow: auto;
     }
 `
 const Screen = styled.div`
@@ -33,9 +34,11 @@ const Screen = styled.div`
     flex-wrap: wrap;
     justify-content: space-between;
     @media only screen and (max-width: 600px) {
-        margin: 20px auto;
+        justify-content: space-around;
+        margin: 60px auto;
         width: 95%;
-        max-width: ${window.innerWidth}
+        max-width: 95%;
+        height: 400px;
     }
 `
 // const ImageView = styled.div`
@@ -69,7 +72,8 @@ const DetailScreen = styled(Screen)`
     @media only screen and (max-width: 600px) {
         margin: 0 auto;
         width: 50%;
-        max-width: ${window.innerWidth}
+        height: 300px;
+        margin-bottom: 40px;
     }
 `
 const RightPane = styled.div`
