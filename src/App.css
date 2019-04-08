@@ -1,6 +1,8 @@
 .App {
   display: flex;
   background-color: white;
+  width: 100%;
+  max-width: 100%;
   
 }
 .right{
@@ -95,7 +97,7 @@ margin: 3px;
 @media only screen and (max-width: 600px) {
   .image-view{
     height: 300px;
-    width: 300px;
+    width: 40%;
     margin: 0 auto;
   }
   .on-off-button{

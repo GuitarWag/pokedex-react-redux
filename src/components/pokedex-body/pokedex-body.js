@@ -4,6 +4,7 @@ import { Carousel } from 'react-bootstrap';
 import on from './images/on.png'
 import off from './images/off.png'
 
+ 
 const Card = styled.div`
     background-color: #FF0000;
     box-shadow: 5px 10px 5px #888888;
@@ -15,8 +16,8 @@ const Card = styled.div`
     display: flex;
     @media only screen and (max-width: 600px) {
         flex-direction: column;
-        width: 100%;
-        min-width: 580px;
+        width: ${window.innerWidth}
+        max-width: 100%;
         height: auto;
         margin: 0 auto;
     }
@@ -32,8 +33,9 @@ const Screen = styled.div`
     flex-wrap: wrap;
     justify-content: space-between;
     @media only screen and (max-width: 600px) {
-        margin: 20px;
-        width: auto;
+        margin: 20px auto;
+        width: 95%;
+        max-width: ${window.innerWidth}
     }
 `
 // const ImageView = styled.div`
@@ -52,6 +54,11 @@ const Name = styled.p`
     margin: 0 0 5px 15px;
     align-self: center;
     text-transform: capitalize;
+    @media only screen and (max-width: 600px) {
+        margin: 0 auto;
+        width: 95%;
+        max-width: ${window.innerWidth}
+    }
 `
 const DetailScreen = styled(Screen)`
     display: flex;
@@ -59,6 +66,11 @@ const DetailScreen = styled(Screen)`
     height: 200px;
     width: 250px;
     margin: 0 0 0 15px;
+    @media only screen and (max-width: 600px) {
+        margin: 0 auto;
+        width: 50%;
+        max-width: ${window.innerWidth}
+    }
 `
 const RightPane = styled.div`
     display: flex;
