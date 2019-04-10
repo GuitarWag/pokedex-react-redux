@@ -43,11 +43,8 @@ class App extends Component {
     return (
       <Container>
         <PokedexBody 
-          pokemons={this.state.pokemons}
           currentPokemon={this.state.currentPokemon}
           onSelect={(e) => this.onSelect(e)}
-          isPokedexOn={this.state.isPokedexOn}
-          power={this.power.bind(this)}
         />
       </Container>
     );

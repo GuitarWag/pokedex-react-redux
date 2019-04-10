@@ -1,9 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Carousel, Container, Col } from 'react-bootstrap';
+import { Carousel, Container } from 'react-bootstrap';
+import { connect } from 'react-redux';
 import on from './images/on.png'
 import off from './images/off.png'
-
+import Axios from 'axios'
+const API_LINK = "https://pokeapi.co/api/v2/pokemon/?offset=0&limit=694"
  
 const Card = styled(Container)`
     background-color: #FF0000;
@@ -37,6 +39,7 @@ const Screen = styled.div`
         justify-content: space-around;
         margin: 60px auto;
         width: 95%;
+        min-width: 270px;
         max-width: 95%;
         height: 400px;
     }
@@ -51,7 +54,7 @@ const Screen = styled.div`
 // `
 const Name = styled.p`
     color: #fff;
-    font-family: Roboto;
+    font-family: 'Roboto', sans-serif;
     font-size: 36px;
     font-weight: bolder;
     margin: 0 0 5px 15px;
@@ -70,8 +73,8 @@ const DetailScreen = styled(Screen)`
     width: 250px;
     margin: 0 0 0 15px;
     @media only screen and (max-width: 600px) {
-        margin: 0 auto;
-        width: 50%;
+        margin: 10px auto;
+        width: 90%;
         height: 300px;
         margin-bottom: 40px;
     }
@@ -126,7 +129,7 @@ const PreviewText = styled.p`
     justify-self: flex-end;
     font-size: 14px;
     font-weight: bolder;
-    font-family: Roboto;
+    font-family: 'Roboto', sans-serif;
   `
 const PreviewImg = styled.img`
     height: 100%;
@@ -140,7 +143,7 @@ const DetailText = styled.p`
     justify-content: space-between;
     font-size: 18px;
     font-weight: bolder;
-    font-family: Roboto;
+    font-family: 'Roboto', sans-serif;
 `
 
 const PokedexBody = ({pokemons, onSelect, currentPokemon, isPokedexOn, power}) => (
@@ -160,21 +163,22 @@ const PokedexBody = ({pokemons, onSelect, currentPokemon, isPokedexOn, power}) =
         </Screen>
         <RightPane>
             {/* <ImageView /> */}
-            {<Carousel className="image-view">
+            {isPokedexOn? <Carousel className="image-view">
                     <img src={currentPokemon? currentPokemon.data.sprites.front_default : ""}/>
                     <img src={currentPokemon? currentPokemon.data.sprites.back_default : ""}/>
-            </Carousel>}
-            <Name>{currentPokemon? currentPokemon.data.name : "..." }</Name>
+            </Carousel> :
+            <Carousel className="image-view" />}
+            <Name>{currentPokemon && isPokedexOn? currentPokemon.data.name : "..." }</Name>
             <DetailScreen>
-                <DetailText className="edit">{currentPokemon && `Type: ${currentPokemon.data.types.map((type) => ` ${type.type.name}`)}`}</DetailText>
-                <DetailText className="edit">{currentPokemon && `Speed: ${currentPokemon.data.stats[0].base_stat}`}</DetailText>
-                <DetailText className="edit">{currentPokemon && `Defense: ${currentPokemon.data.stats[3].base_stat}`}</DetailText>
-                <DetailText className="edit">{currentPokemon && `Attack: ${currentPokemon.data.stats[4].base_stat}`}</DetailText>
-                <DetailText className="edit">{currentPokemon && `HP: ${currentPokemon.data.stats[5].base_stat}`}</DetailText>
-                <DetailText className="edit">{currentPokemon && `Sp.Defense: ${currentPokemon.data.stats[1].base_stat}`}</DetailText>
-                <DetailText className="edit">{currentPokemon && `Sp.Attack: ${currentPokemon.data.stats[2].base_stat}`}</DetailText>
+                <DetailText className="edit">{isPokedexOn && currentPokemon && `Type: ${currentPokemon.data.types.map((type) => ` ${type.type.name}`)}`}</DetailText>
+                <DetailText className="edit">{isPokedexOn && currentPokemon && `Speed: ${currentPokemon.data.stats[0].base_stat}`}</DetailText>
+                <DetailText className="edit">{isPokedexOn && currentPokemon && `Defense: ${currentPokemon.data.stats[3].base_stat}`}</DetailText>
+                <DetailText className="edit">{isPokedexOn && currentPokemon && `Attack: ${currentPokemon.data.stats[4].base_stat}`}</DetailText>
+                <DetailText className="edit">{isPokedexOn && currentPokemon && `HP: ${currentPokemon.data.stats[5].base_stat}`}</DetailText>
+                <DetailText className="edit">{isPokedexOn && currentPokemon && `Sp.Defense: ${currentPokemon.data.stats[1].base_stat}`}</DetailText>
+                <DetailText className="edit">{isPokedexOn && currentPokemon && `Sp.Attack: ${currentPokemon.data.stats[2].base_stat}`}</DetailText>
             </DetailScreen>
-            <img className="on-off-button" onClick={power} src={isPokedexOn? on : off}/>
+            <img className="on-off-button" onClick={() => power(isPokedexOn)} src={isPokedexOn? on : off}/>
             {/* <Control>
                 <ControlButton className="up-button"/>
                 <ControlButton className="right-button"/>
@@ -186,5 +190,28 @@ const PokedexBody = ({pokemons, onSelect, currentPokemon, isPokedexOn, power}) =
         </RightPane>
     </Card>
 )
-
-export default PokedexBody;
+const mapStateToProps = (state) => ({
+    pokemons: state.pokemons,
+    isPokedexOn: state.utils.isPokedexOn
+})
+const mapDispatchToProps = (dispatch) => ({
+    power: async (isPokedexOn) => {
+        if (!isPokedexOn) {
+            const res = await Axios.get(API_LINK)
+            const pokemons = res.data.results
+            dispatch({
+                type: "POWER_ON",
+                payload: [...pokemons]
+            })
+            dispatch({
+                type: "POWER_BUTTON",
+                payload: !isPokedexOn
+            })
+        }
+        dispatch({
+            type: "POWER_BUTTON",
+            payload: !isPokedexOn
+        })
+    }
+})
+export default connect(mapStateToProps, mapDispatchToProps)(PokedexBody);

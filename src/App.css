@@ -1,6 +1,7 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto');
 .App {
   display: flex;
-  background-color: white;
+  background-color: papayawhip;
   
 }
 .right{
@@ -66,7 +67,7 @@ margin: 3px;
   justify-self: flex-end;
   font-size: 14px;
   font-weight: bolder;
-  font-family: Roboto;
+  font-family: 'Roboto', sans-serif;
 }
 .preview-img{
   height: 100%;
@@ -79,7 +80,7 @@ margin: 3px;
   justify-content: space-between;
   font-size: 18px;
   font-weight: bolder;
-  font-family: Roboto;
+  font-family: 'Roboto', sans-serif;
 
 }
 .on-off-button{
@@ -99,8 +100,9 @@ margin: 3px;
     margin: -30px auto;
   }
   .on-off-button{
-    position: fixed;
+    position: absolute;
     top: 0;
-    right: 20px;
+    left: 50%;
+    right: 50%;
   }
 }
