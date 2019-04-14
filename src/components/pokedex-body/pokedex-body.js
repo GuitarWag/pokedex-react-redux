@@ -44,14 +44,7 @@ const Screen = styled.div`
         height: 400px;
     }
 `
-// const ImageView = styled.div`
-//     height: 150px;
-//     width: 150px;
-//     background-color: #B9F4FF;
-//     border: solid 5px grey;
-//     border-radius: 100%;
-//     margin: 40px 0 0 85px;
-// `
+
 const Name = styled.p`
     color: #fff;
     font-family: 'Roboto', sans-serif;
@@ -85,29 +78,6 @@ const RightPane = styled.div`
     text-align: center;
     align-content: center;
   `
-const ControlButton = styled.div`
-    position: relative;
-    height: 30px;
-    width: 20px;
-    background-color: #FFEB00;
-    border: solid 1px gray;
-    box-shadow: 0 2px 4px #888888;
-`
-const RoundButton = styled.div`
-    position: relative;
-    height: 30px;
-    width: 30px;
-    border-radius: 100%;
-    background-color: #FFEB00;
-    border: solid 1px gray;
-    box-shadow: 0 2px 4px #888888;
-
-`
-const Control = styled.div`
-    margin: 20px 0 0 0;
-    height: 150px;
-    width: 315px;
-`
 const PokemonPreview = styled.div`
     cursor: pointer;
     height: 110px;
@@ -148,12 +118,11 @@ const DetailText = styled.p`
 
 const PokedexBody = ({pokemons, onSelect, currentPokemon, isPokedexOn, power}) => (
     <Card>
-        {console.log(isPokedexOn)}
         <Screen>
             {isPokedexOn && pokemons && pokemons.map((pokemon, i) => (
                 <PokemonPreview 
                     key={pokemon.name} 
-                    onClick={onSelect}
+                    onClick={(e)=> onSelect(e)}
                     id={pokemon.name}
                 >
                     <PreviewImg id={pokemon.name} src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${i+1}.png`}/>
@@ -162,7 +131,6 @@ const PokedexBody = ({pokemons, onSelect, currentPokemon, isPokedexOn, power}) =
             ))}
         </Screen>
         <RightPane>
-            {/* <ImageView /> */}
             {isPokedexOn? <Carousel className="image-view">
                     <img src={currentPokemon? currentPokemon.data.sprites.front_default : ""}/>
                     <img src={currentPokemon? currentPokemon.data.sprites.back_default : ""}/>
@@ -179,22 +147,23 @@ const PokedexBody = ({pokemons, onSelect, currentPokemon, isPokedexOn, power}) =
                 <DetailText className="edit">{isPokedexOn && currentPokemon && `Sp.Attack: ${currentPokemon.data.stats[2].base_stat}`}</DetailText>
             </DetailScreen>
             <img className="on-off-button" onClick={() => power(isPokedexOn)} src={isPokedexOn? on : off}/>
-            {/* <Control>
-                <ControlButton className="up-button"/>
-                <ControlButton className="right-button"/>
-                <ControlButton className="down-button"/>
-                <ControlButton className="left-button"/>
-                <RoundButton className="round-button-1" />
-                <RoundButton className="round-button-2" />
-            </Control> */}
         </RightPane>
     </Card>
 )
 const mapStateToProps = (state) => ({
     pokemons: state.pokemons,
-    isPokedexOn: state.utils.isPokedexOn
+    isPokedexOn: state.utils.isPokedexOn,
+    currentPokemon: state.currentPokemon
 })
 const mapDispatchToProps = (dispatch) => ({
+    onSelect: async (e) => {
+        const selectedPokemon = e.target.id
+        const currentPokemon = await Axios.get(`https://pokeapi.co/api/v2/pokemon/${selectedPokemon}`)
+        dispatch({
+            type: "SELECT_POKEMON",
+            payload: currentPokemon
+        })
+    },
     power: async (isPokedexOn) => {
         if (!isPokedexOn) {
             const res = await Axios.get(API_LINK)
